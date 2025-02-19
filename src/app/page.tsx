@@ -1,31 +1,75 @@
 "use client";
 
-import { useState } from "react";
-import { BoardList } from "./components/BoardList";
+import { useState, useEffect } from "react";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
+import { loadBoards, saveBoards } from "./utils/storage";
 import { Board } from "./types";
+import BoardList from "./components/BoardList";
 
 export default function Home() {
-  const initBoard = [
-    {
-      id: "1",
-      title: "backlog",
-      todos: [{ id: "1", content: "기능 구현" }],
-    },
-  ];
-  const [boards, setBoards] = useState<Board[]>(initBoard);
+  const [boards, setBoards] = useState<Board[]>([]);
+
+  useEffect(() => {
+    setBoards(loadBoards());
+  }, []);
+
+  useEffect(() => {
+    saveBoards(boards);
+  }, [boards]);
+
+  const addBoard = () => {
+    const newBoard: Board = {
+      id: crypto.randomUUID(),
+      title: "새 보드",
+      todos: [],
+    };
+    setBoards([...boards, newBoard]);
+  };
+
+  const updateBoard = (boardId: string, title: string) => {
+    setBoards(
+      boards.map((board) =>
+        board.id === boardId ? { ...board, title } : board
+      )
+    );
+  };
+
+  const deleteBoard = (boardId: string) => {
+    setBoards(boards.filter((board) => board.id !== boardId));
+  };
+
+  const moveBoard = (dragIndex: number, hoverIndex: number) => {
+    const newBoards = [...boards];
+    const dragBoard = newBoards[dragIndex];
+    newBoards.splice(dragIndex, 1);
+    newBoards.splice(hoverIndex, 0, dragBoard);
+    setBoards(newBoards);
+  };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-8">
-      <div className="max-w-7xl mx-auto">
-        <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">To-Do Page</h1>
-          <button className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
-            새 보드 추가
-          </button>
+    <DndProvider backend={HTML5Backend}>
+      <div className="min-h-screen bg-gray-100 p-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex justify-between items-center mb-8">
+            <h1 className="text-3xl font-bold text-gray-900">To-Do Page</h1>
+            <button
+              onClick={addBoard}
+              className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+            >
+              새 보드 추가
+            </button>
+          </div>
+          <BoardList
+            boards={boards}
+            onUpdateBoard={updateBoard}
+            onDeleteBoard={deleteBoard}
+            onMoveBoard={moveBoard}
+            setBoards={setBoards}
+          />
         </div>
-        <BoardList boards={boards} />
       </div>
-    </div>
+    </DndProvider>
   );
 }
