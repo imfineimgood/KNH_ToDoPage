@@ -1,4 +1,5 @@
-import Board from "./Board";
+import { Board } from "../types";
+import BoardItem from "./BoardItem";
 
 type BoardListProps = {
   boards: Board[];
@@ -6,6 +7,7 @@ type BoardListProps = {
   onDeleteBoard: (boardId: string) => void;
   onMoveBoard: (dragIndex: number, hoverIndex: number) => void;
   setBoards: React.Dispatch<React.SetStateAction<Board[]>>;
+  onDeleteTodo: (boardId: string, todoId: string) => void;
 };
 
 export default function BoardList({
@@ -14,6 +16,7 @@ export default function BoardList({
   onDeleteBoard,
   onMoveBoard,
   setBoards,
+  onDeleteTodo,
 }: BoardListProps) {
   const moveTodo = (
     fromBoardId: string,
@@ -49,7 +52,7 @@ export default function BoardList({
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {boards.map((board, index) => (
-        <Board
+        <BoardItem
           key={board.id}
           board={board}
           index={index}
@@ -57,6 +60,7 @@ export default function BoardList({
           onDeleteBoard={onDeleteBoard}
           onMoveBoard={onMoveBoard}
           onMoveTodo={moveTodo}
+          onDeleteTodo={onDeleteTodo}
         />
       ))}
     </div>

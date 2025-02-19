@@ -15,15 +15,17 @@ type BoardProps = {
     dragIndex: number,
     hoverIndex: number
   ) => void;
+  onDeleteTodo: (boardId: string, todoId: string) => void;
 };
 
-export default function Board({
+export default function BoardItem({
   board,
   index,
   onUpdateBoard,
   onDeleteBoard,
   onMoveBoard,
   onMoveTodo,
+  onDeleteTodo,
 }: BoardProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [title, setTitle] = useState(board.title);
@@ -41,7 +43,7 @@ export default function Board({
 
   const [, drop] = useDrop({
     accept: "BOARD",
-    hover: (item: { index: number }, monitor) => {
+    hover: (item: { index: number }) => {
       if (!ref.current) return;
       const dragIndex = item.index;
       const hoverIndex = index;
@@ -53,7 +55,7 @@ export default function Board({
 
   const [, todoDrop] = useDrop({
     accept: "TODO",
-    hover: (item: { boardId: string; index: number }, monitor) => {
+    drop: (item: { boardId: string; index: number }, monitor) => {
       if (!monitor.isOver({ shallow: true })) return;
       if (item.boardId !== board.id) {
         onMoveTodo(item.boardId, board.id, item.index, board.todos.length);
@@ -120,6 +122,7 @@ export default function Board({
             index={todoIndex}
             boardId={board.id}
             onMoveTodo={onMoveTodo}
+            onDeleteTodo={onDeleteTodo}
           />
         ))}
       </div>

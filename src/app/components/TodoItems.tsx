@@ -12,6 +12,7 @@ type TodoItemProps = {
     dragIndex: number,
     hoverIndex: number
   ) => void;
+  onDeleteTodo: (boardId: string, todoId: string) => void;
 };
 
 export default function TodoItem({
@@ -19,6 +20,7 @@ export default function TodoItem({
   index,
   boardId,
   onMoveTodo,
+  onDeleteTodo,
 }: TodoItemProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [content, setContent] = useState(todo.content);
@@ -27,12 +29,16 @@ export default function TodoItem({
 
   const [{ isDragging }, drag] = useDrag({
     type: "TODO",
-    item: { boardId, index },
+    item: () => ({ boardId, index }), // 함수로 변경
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
+    end: (item, monitor) => {
+      if (!monitor.didDrop()) {
+        return;
+      }
+    },
   });
-
   const [, drop] = useDrop({
     accept: "TODO",
     hover: (item: { boardId: string; index: number }, monitor) => {
@@ -70,7 +76,20 @@ export default function TodoItem({
           autoFocus
         />
       ) : (
-        <div onClick={() => setIsEditing(true)}>{todo.content}</div>
+        <div className="relative w-full">
+          <div
+            className="w-full break-all pr-8"
+            onClick={() => setIsEditing(true)}
+          >
+            {todo.content}
+          </div>
+          <button
+            onClick={() => onDeleteTodo(boardId, todo.id)}
+            className="text-red-500 text-xl hover:text-red-600 ml-2 absolute right-0 top-0 "
+          >
+            ×
+          </button>
+        </div>
       )}
     </div>
   );

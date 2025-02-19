@@ -48,6 +48,20 @@ export default function Home() {
     setBoards(newBoards);
   };
 
+  const deleteTodo = (boardId: string, todoId: string) => {
+    setBoards(
+      boards.map((board) => {
+        if (board.id === boardId) {
+          return {
+            ...board,
+            todos: board.todos.filter((todo) => todo.id !== todoId),
+          };
+        }
+        return board;
+      })
+    );
+  };
+
   return (
     <DndProvider backend={HTML5Backend}>
       <div className="min-h-screen bg-gray-100 p-8">
@@ -67,6 +81,7 @@ export default function Home() {
             onDeleteBoard={deleteBoard}
             onMoveBoard={moveBoard}
             setBoards={setBoards}
+            onDeleteTodo={deleteTodo}
           />
         </div>
       </div>
