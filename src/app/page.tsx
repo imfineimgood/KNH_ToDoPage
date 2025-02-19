@@ -64,8 +64,8 @@ export default function Home() {
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <div className="min-h-screen bg-gray-100 p-8">
-        <div className="max-w-7xl mx-auto">
+      <div className="h-screen bg-gray-100 p-8">
+        <div className="w-full h-full flex flex-col">
           <div className="flex justify-between items-center mb-8">
             <h1 className="text-3xl font-bold text-gray-900">To-Do Page</h1>
             <button

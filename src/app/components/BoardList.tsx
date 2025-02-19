@@ -25,7 +25,7 @@ export default function BoardList({
     hoverIndex: number
   ) => {
     setBoards((prevBoards) => {
-      const newBoards = JSON.parse(JSON.stringify(prevBoards)); // Deep copy
+      const newBoards = JSON.parse(JSON.stringify(prevBoards));
       const fromBoardIndex = newBoards.findIndex(
         (b: Board) => b.id === fromBoardId
       );
@@ -50,7 +50,7 @@ export default function BoardList({
   };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <ol className="flex gap-4 h-full overflow-x-auto pb-4 max-w-screen [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
       {boards.map((board, index) => (
         <BoardItem
           key={board.id}
@@ -63,6 +63,6 @@ export default function BoardList({
           onDeleteTodo={onDeleteTodo}
         />
       ))}
-    </div>
+    </ol>
   );
 }

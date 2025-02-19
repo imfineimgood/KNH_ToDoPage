@@ -25,11 +25,11 @@ export default function TodoItem({
   const [isEditing, setIsEditing] = useState(false);
   const [content, setContent] = useState(todo.content);
 
-  const ref = useRef<HTMLDivElement>(null);
+  const ref = useRef<HTMLLIElement>(null);
 
   const [{ isDragging }, drag] = useDrag({
     type: "TODO",
-    item: () => ({ boardId, index }), // 함수로 변경
+    item: () => ({ boardId, index }),
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
@@ -41,7 +41,7 @@ export default function TodoItem({
   });
   const [, drop] = useDrop({
     accept: "TODO",
-    hover: (item: { boardId: string; index: number }, monitor) => {
+    hover: (item: { boardId: string; index: number }) => {
       if (!ref.current) return;
       const dragIndex = item.index;
       const hoverIndex = index;
@@ -57,7 +57,7 @@ export default function TodoItem({
   drag(drop(ref));
 
   return (
-    <div
+    <li
       ref={ref}
       className={`p-3 bg-gray-50 rounded cursor-move ${
         isDragging ? "opacity-50" : ""
@@ -91,6 +91,6 @@ export default function TodoItem({
           </button>
         </div>
       )}
-    </div>
+    </li>
   );
 }
