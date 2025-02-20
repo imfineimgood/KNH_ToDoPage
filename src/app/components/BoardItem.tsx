@@ -65,7 +65,10 @@ export default function BoardItem({
     },
   });
 
-  drag(drop(ref));
+  const combinedRef = (el: HTMLLIElement) => {
+    ref.current = el;
+    drag(drop(todoDrop(el)));
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -81,12 +84,12 @@ export default function BoardItem({
 
   return (
     <li
-      ref={ref}
+      ref={combinedRef}
       className={`text-black bg-white rounded-lg shadow p-4 h-fit w-[350px] flex-shrink-0 ${
         isDragging ? "opacity-50" : ""
       }`}
     >
-      <div ref={todoDrop}>
+      <div>
         <div className="flex justify-between items-center mb-4">
           {isEditing ? (
             <input
@@ -115,7 +118,7 @@ export default function BoardItem({
             삭제
           </button>
         </div>
-        <ol className="space-y-2">
+        <ol className="space-y-2 min-h-[10px]">
           {board.todos.map((todo, todoIndex) => (
             <TodoItem
               key={todo.id}
