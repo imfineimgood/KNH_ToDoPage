@@ -1,60 +1,36 @@
-import { useRef, useState } from "react";
-import { useDrag, useDrop } from "react-dnd";
+import { useState } from "react";
 import { Todo } from "../types";
+import { useBoardActions } from "@/hooks/useBoardActions";
+import { useTodoDrag } from "@/hooks/useTodoDrag";
 
-type TodoItemProps = {
+interface TodoItemProps {
   todo: Todo;
   index: number;
   boardId: string;
-  onMoveTodo: (
-    fromBoardId: string,
-    toBoardId: string,
-    dragIndex: number,
-    hoverIndex: number
-  ) => void;
-  onDeleteTodo: (boardId: string, todoId: string) => void;
-};
+}
 
-export default function TodoItem({
-  todo,
-  index,
-  boardId,
-  onMoveTodo,
-  onDeleteTodo,
-}: TodoItemProps) {
+export default function TodoItem({ todo, index, boardId }: TodoItemProps) {
+  const { updateTodo, deleteTodo, moveTodo } = useBoardActions();
   const [isEditing, setIsEditing] = useState(false);
-  const [content, setContent] = useState(todo.content);
+  const [content, setContent] = useState(todo?.content);
 
-  const ref = useRef<HTMLLIElement>(null);
+  const { ref, isDragging, TodoDragDropRef } = useTodoDrag(
+    boardId,
+    index,
+    moveTodo
+  );
 
-  const [{ isDragging }, drag] = useDrag({
-    type: "TODO",
-    item: () => ({ boardId, index }),
-    collect: (monitor) => ({
-      isDragging: monitor.isDragging(),
-    }),
-    end: (item, monitor) => {
-      if (!monitor.didDrop()) {
-        return;
-      }
-    },
-  });
-  const [, drop] = useDrop({
-    accept: "TODO",
-    hover: (item: { boardId: string; index: number }) => {
-      if (!ref.current) return;
-      const dragIndex = item.index;
-      const hoverIndex = index;
+  const handleContentBlur = () => {
+    const trimmedContent = content.trim();
+    if (trimmedContent) {
+      updateTodo(boardId, todo.id, trimmedContent);
+    }
+    setIsEditing(false);
+  };
 
-      if (dragIndex === hoverIndex && item.boardId === boardId) return;
-
-      onMoveTodo(item.boardId, boardId, dragIndex, hoverIndex);
-      item.index = hoverIndex;
-      item.boardId = boardId;
-    },
-  });
-
-  drag(drop(ref));
+  if (ref.current) {
+    TodoDragDropRef(ref.current);
+  }
 
   return (
     <li
@@ -68,10 +44,7 @@ export default function TodoItem({
           type="text"
           value={content}
           onChange={(e) => setContent(e.target.value)}
-          onBlur={() => {
-            todo.content = content;
-            setIsEditing(false);
-          }}
+          onBlur={handleContentBlur}
           className="w-full border rounded px-2 py-1"
           autoFocus
         />
@@ -81,11 +54,11 @@ export default function TodoItem({
             className="w-full break-all pr-8"
             onClick={() => setIsEditing(true)}
           >
-            {todo.content}
+            {todo?.content}
           </div>
           <button
-            onClick={() => onDeleteTodo(boardId, todo.id)}
-            className="text-red-500 text-xl hover:text-red-600 ml-2 absolute right-0 top-0 "
+            onClick={() => deleteTodo(boardId, todo?.id)}
+            className="text-red-500 text-xl hover:text-red-600 ml-2 absolute right-0 top-0"
           >
             ×
           </button>
