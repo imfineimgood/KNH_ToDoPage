@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Todo } from "../types";
 import { useBoardActions } from "@/hooks/useBoardActions";
 import { useTodoDrag } from "@/hooks/useTodoDrag";
+import { TodoEditInput } from "./TodoEditInput";
+import { TodoContent } from "./TodoContent";
 
 interface TodoItemProps {
   todo: Todo;
@@ -10,9 +12,8 @@ interface TodoItemProps {
 }
 
 export default function TodoItem({ todo, index, boardId }: TodoItemProps) {
-  const { updateTodo, deleteTodo, moveTodo } = useBoardActions();
+  const { updateTodo, moveTodo } = useBoardActions();
   const [isEditing, setIsEditing] = useState(false);
-  const [content, setContent] = useState(todo?.content);
 
   const { ref, isDragging, TodoDragDropRef } = useTodoDrag(
     boardId,
@@ -20,17 +21,13 @@ export default function TodoItem({ todo, index, boardId }: TodoItemProps) {
     moveTodo
   );
 
-  const handleContentBlur = () => {
-    const trimmedContent = content.trim();
-    if (trimmedContent) {
-      updateTodo(boardId, todo.id, trimmedContent);
-    }
-    setIsEditing(false);
-  };
-
   if (ref.current) {
     TodoDragDropRef(ref.current);
   }
+
+  const handleUpdateTodo = (newContent: string) => {
+    updateTodo(boardId, todo.id, newContent);
+  };
 
   return (
     <li
@@ -40,29 +37,18 @@ export default function TodoItem({ todo, index, boardId }: TodoItemProps) {
       }`}
     >
       {isEditing ? (
-        <input
-          type="text"
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          onBlur={handleContentBlur}
-          className="w-full border rounded px-2 py-1"
-          autoFocus
+        <TodoEditInput
+          initialContent={todo.content}
+          onSave={handleUpdateTodo}
+          onBlur={() => setIsEditing(false)}
         />
       ) : (
-        <div className="relative w-full">
-          <div
-            className="w-full break-all pr-8"
-            onClick={() => setIsEditing(true)}
-          >
-            {todo?.content}
-          </div>
-          <button
-            onClick={() => deleteTodo(boardId, todo?.id)}
-            className="text-red-500 text-xl hover:text-red-600 ml-2 absolute right-0 top-0"
-          >
-            ×
-          </button>
-        </div>
+        <TodoContent
+          content={todo.content}
+          boardId={boardId}
+          todoId={todo.id}
+          onEdit={() => setIsEditing(true)}
+        />
       )}
     </li>
   );
