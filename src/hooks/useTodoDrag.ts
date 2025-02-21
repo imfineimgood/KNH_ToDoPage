@@ -1,3 +1,4 @@
+import { DRAG_TYPES } from "@/const";
 import { useRef } from "react";
 import { useDrag, useDrop } from "react-dnd";
 
@@ -14,15 +15,15 @@ export const useTodoDrag = (
   const ref = useRef<HTMLLIElement>(null);
 
   const [{ isDragging }, drag] = useDrag({
-    type: "TODO",
-    item: () => ({ boardId, index, type: "TODO" }),
+    type: DRAG_TYPES.TODO,
+    item: () => ({ boardId, index, type: DRAG_TYPES.TODO }),
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
   });
 
   const [, drop] = useDrop({
-    accept: "TODO",
+    accept: DRAG_TYPES.TODO,
     hover: (
       item: { type: string; boardId: string; index: number },
       monitor

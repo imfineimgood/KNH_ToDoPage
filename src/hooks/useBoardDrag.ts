@@ -1,3 +1,4 @@
+import { DRAG_TYPES } from "@/const";
 import { DragItem, TodoDragItem } from "@/type/types";
 import { RefObject, useRef } from "react";
 import { useDrag, useDrop } from "react-dnd";
@@ -10,19 +11,19 @@ export const useBoardDrag = (
   const ref = useRef<HTMLLIElement>(null);
 
   const [{ isDragging }, drag] = useDrag({
-    type: "BOARD",
-    item: { index, type: "BOARD" },
+    type: DRAG_TYPES.BOARD,
+    item: { index, type: DRAG_TYPES.BOARD },
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
   });
 
   const [, drop] = useDrop({
-    accept: ["BOARD", "TODO"],
+    accept: [DRAG_TYPES.BOARD, DRAG_TYPES.TODO],
     hover: (item: DragItem) => {
       if (!ref.current) return;
 
-      if (item.type === "BOARD") {
+      if (item.type === DRAG_TYPES.BOARD) {
         const dragIndex = item.index;
         const hoverIndex = index;
 
@@ -33,7 +34,7 @@ export const useBoardDrag = (
       }
     },
     drop: (item: DragItem, monitor) => {
-      if (item.type === "TODO" && !monitor.didDrop()) {
+      if (item.type === DRAG_TYPES.TODO && !monitor.didDrop()) {
         const todoItem = item as TodoDragItem;
         onTodoDrop(todoItem.boardId);
       }
