@@ -1,4 +1,4 @@
-import { DragItem, TodoDragItem } from "@/app/types";
+import { DragItem, TodoDragItem } from "@/type/types";
 import { RefObject, useRef } from "react";
 import { useDrag, useDrop } from "react-dnd";
 
@@ -40,9 +40,14 @@ export const useBoardDrag = (
     },
   });
 
+  const dragDropRef = (el: RefObject<HTMLLIElement | null>) => {
+    drag(drop(el));
+    return el;
+  };
+
   return {
     ref,
     isDragging,
-    dragDropRef: (el: RefObject<HTMLLIElement | null>) => drag(drop(el)),
+    dragDropRef,
   };
 };

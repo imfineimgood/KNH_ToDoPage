@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { useBoardStore } from "../store/useBoardStore";
-import { Board } from "@/app/types";
+import { Board } from "@/type/types";
 
 export const useBoardActions = () => {
   const { boards, setBoards } = useBoardStore();

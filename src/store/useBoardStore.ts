@@ -1,4 +1,4 @@
-import { Board } from "@/app/types";
+import { Board } from "@/type/types";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 

@@ -1,4 +1,4 @@
-import { Board } from "@/app/types";
+import { Board } from "@/type/types";
 import { useBoardActions } from "./useBoardActions";
 import { useBoardDrag } from "./useBoardDrag";
 import { useTodoActions } from "./useTodoActions";

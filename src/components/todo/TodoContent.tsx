@@ -1,4 +1,4 @@
-import { DeleteButton } from "../common/DeleteButton";
+import { DeleteButton } from "../home/DeleteButton";
 
 interface TodoContentProps {
   content: string;

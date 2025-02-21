@@ -1,4 +1,4 @@
-import { Todo } from "@/app/types";
+import { Todo } from "@/type/types";
 import { useTodoDrag } from "@/hooks/useTodoDrag";
 import { useState } from "react";
 import { useTodoActions } from "./useTodoActions";

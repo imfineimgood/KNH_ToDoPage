@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { UpdateInput } from "../home/UpdateInput";
 
 interface EditableTitleProps {
   title: string;
@@ -9,20 +10,18 @@ export function BoardEditTitle({ title, onSave }: EditableTitleProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [editTitle, setEditTitle] = useState(title);
 
-  const handleBlur = () => {
+  const handleSave = () => {
     onSave(editTitle);
     setIsEditing(false);
   };
 
   if (isEditing) {
     return (
-      <input
-        type="text"
+      <UpdateInput
         value={editTitle}
-        onChange={(e) => setEditTitle(e.target.value)}
-        onBlur={handleBlur}
-        className="border rounded px-2 py-1"
-        autoFocus
+        onChange={setEditTitle}
+        onSave={handleSave}
+        className="border rounded px-2 py-1 text-xl"
       />
     );
   }

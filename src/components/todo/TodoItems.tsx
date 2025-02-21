@@ -1,7 +1,7 @@
-import { Todo } from "../../types";
 import { useTodoItem } from "@/hooks/useTodoItem";
 import { TodoEditInput } from "./TodoEditInput";
 import { TodoContent } from "./TodoContent";
+import { Todo } from "@/type/types";
 
 interface TodoItemProps {
   todo: Todo;

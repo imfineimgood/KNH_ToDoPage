@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { UpdateInput } from "../home/UpdateInput";
 
 interface TodoAddFormProps {
   onSubmit: (content: string) => void;
@@ -7,8 +8,7 @@ interface TodoAddFormProps {
 export function TodoAddForm({ onSubmit }: TodoAddFormProps) {
   const [newTodo, setNewTodo] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSave = () => {
     if (newTodo.trim()) {
       onSubmit(newTodo.trim());
       setNewTodo("");
@@ -16,13 +16,13 @@ export function TodoAddForm({ onSubmit }: TodoAddFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="mt-4">
-      <input
-        type="text"
+    <form onSubmit={handleSave} className="mt-4">
+      <UpdateInput
         value={newTodo}
-        onChange={(e) => setNewTodo(e.target.value)}
-        placeholder="새 할 일 추가"
+        onChange={setNewTodo}
+        onSave={handleSave}
         className="w-full border rounded px-3 py-2"
+        placeholder="새 할 일 추가"
       />
     </form>
   );

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { UpdateInput } from "../home/UpdateInput";
 
 interface TodoEditInputProps {
   initialContent: string;
@@ -12,7 +13,7 @@ export function TodoEditInput({
   onBlur,
 }: TodoEditInputProps) {
   const [content, setContent] = useState(initialContent);
-  const handleBlur = () => {
+  const handleSave = () => {
     const trimmedContent = content.trim();
     if (trimmedContent) {
       onSave(trimmedContent);
@@ -21,13 +22,11 @@ export function TodoEditInput({
   };
 
   return (
-    <input
-      type="text"
+    <UpdateInput
       value={content}
-      onChange={(e) => setContent(e.target.value)}
-      onBlur={handleBlur}
+      onChange={setContent}
+      onSave={handleSave}
       className="w-full border rounded px-2 py-1"
-      autoFocus
     />
   );
 }

@@ -1,8 +1,8 @@
-import { Board } from "../../types";
 import { useBoardItem } from "@/hooks/useBoardItem";
 import { TodoList } from "../todo/TodoList";
 import { TodoAddForm } from "../todo/TodoAddForm";
 import { BoardHeader } from "./BoardHeader";
+import { Board } from "@/type/types";
 
 type BoardProps = {
   board: Board;
