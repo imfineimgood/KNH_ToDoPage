@@ -1,8 +1,8 @@
-interface DeleteButtonProps {
+interface TodoDeleteButtonProps {
   onClick: () => void;
 }
 
-export function DeleteButton({ onClick }: DeleteButtonProps) {
+export function TodoDeleteButton({ onClick }: TodoDeleteButtonProps) {
   return (
     <button
       onClick={onClick}

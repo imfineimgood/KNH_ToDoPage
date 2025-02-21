@@ -1,4 +1,4 @@
-import { DeleteButton } from "../home/DeleteButton";
+import { TodoDeleteButton } from "./TodoDeleteButton";
 
 interface TodoContentProps {
   content: string;
@@ -12,7 +12,7 @@ export function TodoContent({ content, onEdit, onDelete }: TodoContentProps) {
       <div className="w-full break-all pr-8" onClick={onEdit}>
         {content}
       </div>
-      <DeleteButton onClick={onDelete} />
+      <TodoDeleteButton onClick={onDelete} />
     </div>
   );
 }

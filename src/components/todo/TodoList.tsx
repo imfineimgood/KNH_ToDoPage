@@ -8,7 +8,7 @@ interface TodoListProps {
 
 export function TodoList({ todos, boardId }: TodoListProps) {
   return (
-    <ol className="space-y-2 min-h-[10px]">
+    <ol className="space-y-2">
       {todos.map((todo, todoIndex) => (
         <TodoItem
           key={`${boardId}-${todo?.id}`}

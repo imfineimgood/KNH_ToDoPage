@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { UpdateInput } from "../home/UpdateInput";
+import { UpdateInput } from "../common/UpdateInput";
 
 interface TodoAddFormProps {
   onSubmit: (content: string) => void;
