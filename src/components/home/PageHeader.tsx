@@ -1,7 +1,7 @@
 "use client";
 
 import { useBoardActions } from "@/hooks/useBoardActions";
-import { AddButton } from "./BoardAddButton";
+import { AddButton } from "./AddButton";
 import { PageTitle } from "./PageTitle";
 
 export function PageHeader() {
