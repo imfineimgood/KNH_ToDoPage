@@ -12,7 +12,6 @@ export function TodoEditInput({
   onBlur,
 }: TodoEditInputProps) {
   const [content, setContent] = useState(initialContent);
-
   const handleBlur = () => {
     const trimmedContent = content.trim();
     if (trimmedContent) {

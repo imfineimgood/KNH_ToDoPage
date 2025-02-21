@@ -1,18 +1,16 @@
-import { useBoardActions } from "@/hooks/useBoardActions";
 import { useState } from "react";
 
-interface AddTodoFormProps {
-  boardId: string;
+interface TodoAddFormProps {
+  onSubmit: (content: string) => void;
 }
 
-export function AddTodoForm({ boardId }: AddTodoFormProps) {
+export function TodoAddForm({ onSubmit }: TodoAddFormProps) {
   const [newTodo, setNewTodo] = useState("");
-  const { addTodo } = useBoardActions();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (newTodo.trim()) {
-      addTodo(boardId, newTodo.trim());
+      onSubmit(newTodo.trim());
       setNewTodo("");
     }
   };

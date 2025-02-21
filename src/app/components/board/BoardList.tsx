@@ -1,11 +1,8 @@
-import { Board } from "../types";
+import { useBoardStore } from "@/store/useBoardStore";
 import BoardItem from "./BoardItem";
 
-type BoardListProps = {
-  boards: Board[];
-};
-
-export default function BoardList({ boards }: BoardListProps) {
+export default function BoardList() {
+  const { boards } = useBoardStore();
   return (
     <ol className="flex gap-4 h-full overflow-x-auto pb-4 max-w-screen [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
       {boards.map((board, index) => (
