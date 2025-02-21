@@ -13,6 +13,10 @@
 ## 프로젝트 구조
 
 ```
+src/
+├── app/
+│   ├── layout.tsx      # 루트 레이아웃 (전역 UI)
+│   └── page.tsx        # 메인 페이지 컴포넌트
 ├── components/
 │   ├── board/          # 보드 관련 컴포넌트
 │   ├── todo/           # 할 일 관련 컴포넌트
